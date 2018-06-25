@@ -17,5 +17,5 @@ yarn-debug.log*
 yarn-error.log*
 
 # configs
-app/config
+app/config/constants.js
 .env
