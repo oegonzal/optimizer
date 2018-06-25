@@ -67,3 +67,11 @@ export function signInWithFacebook (fbToken, callback) {
         .then((user) => getUser(user, callback))
         .catch((error) => callback(false, null, error));
 }
+
+//Sign user in using Facebook
+export function signInWithFacebook (fbToken, callback) {
+    const credential = provider.credential(fbToken);
+    auth.signInWithCredential(credential)
+        .then((user) => getUser(user, callback))
+        .catch((error) => callback(false, null, error));
+}
