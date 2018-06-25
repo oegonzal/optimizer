@@ -4,9 +4,9 @@
 //   StackNavigator,
 // } from 'react-navigation';
 
-// import SearchPage from './src/components/SearchPage';
-// import SearchResults from './src/components/SearchResults';
-// import PropertyView from './src/components/PropertyView';
+// import SearchPage from './app/components/SearchPage';
+// import SearchResults from './app/components/SearchResults';
+// import PropertyView from './app/components/PropertyView';
 
 // const App = StackNavigator({
 //   Home: { screen: SearchPage },
