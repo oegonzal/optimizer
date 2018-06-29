@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { Text, View, TouchableOpacity, ActionSheetIOS } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
+import ActionSheet from 'react-native-actionsheet';
 
 import { Icon } from 'react-native-elements'
 import moment from "moment";
@@ -14,41 +15,50 @@ import { Actions } from "react-native-router-flux";
 const { deleteQuote, toggleLove } = actions;
 const { normalize } = theme;
 
+// Buttons and indexes for Action Sheet
+const options = [ 'Edit', 'Delete', 'Cancel'];
+const CREATE_INDEX = 0;
+const DESTRUCTIVE_INDEX = 1;
+const CANCEL_INDEX = 2;
+
+
 class Quote extends React.Component {
     constructor() {
         super();
         this.state = {}
 
-        this.onOption = this.onOption.bind(this);
         this.onDelete = this.onDelete.bind(this);
         this.onToggleLove = this.onToggleLove.bind(this);
-
         this.renderLoveButton = this.renderLoveButton.bind(this);
+
+        this.showActionSheet = this.showActionSheet.bind(this);
+        this.handlePress = this.handlePress.bind(this);
     }
 
-    onOption(){
+    showActionSheet() {
+        this.ActionSheet.show();
+    }
+
+    handlePress(buttonIndex) {
         const { quotes, index } = this.props;
         const quote = quotes[index];
 
-        ActionSheetIOS.showActionSheetWithOptions({
-                options: ['Edit', 'Delete', 'Cancel'],
-                destructiveButtonIndex: 1,
-                cancelButtonIndex: 2,
-            },
-            (buttonIndex) => {
-                if (buttonIndex === 0) Actions.NewQuote({ edit:true, quote })
-                else if (buttonIndex === 1) this.onDelete();
-            });
+        if (buttonIndex === CREATE_INDEX) {
+            Actions.NewQuote({ edit:true, quote });
+        }
+        else if (buttonIndex === DESTRUCTIVE_INDEX) {
+            this.onDelete();
+        }
     }
 
-    onDelete(){
+    onDelete() {
         const { quotes, index } = this.props;
         const quote = quotes[index];
 
         this.props.deleteQuote(quote, (error) =>  alert(error.message))
     }
 
-    onToggleLove(){
+    onToggleLove() {
         const { user, quotes, index } = this.props;
         const quote = quotes[index];
 
@@ -57,10 +67,10 @@ class Quote extends React.Component {
         this.props.toggleLove(data, (error) =>  alert(error.message))
     }
 
-    renderOptionButton(){
+    renderOptionButton() {
         return(
             <View style={styles.right}>
-                <TouchableOpacity onPress={this.onOption}>
+                <TouchableOpacity onPress={this.showActionSheet}>
                     <View style={styles.buttonContainer}>
                         <Icon
                             name={'md-more'}
@@ -70,6 +80,13 @@ class Quote extends React.Component {
                         />
                     </View>
                 </TouchableOpacity>
+                <ActionSheet
+                    ref={o => this.ActionSheet = o}
+                    options={options}
+                    cancelButtonIndex={CANCEL_INDEX}
+                    destructiveButtonIndex={DESTRUCTIVE_INDEX}
+                    onPress={this.handlePress}
+                />
             </View>
         )
     }
@@ -107,7 +124,6 @@ class Quote extends React.Component {
         return (
             <View style={[styles.container]}>
                 <View style={[styles.wrapper, {backgroundColor: color, borderColor: color}]}>
-
                     <View style={[styles.quote]}>
                         <Text style={[styles.text]}>
                             {text}
@@ -116,7 +132,6 @@ class Quote extends React.Component {
                     </View>
 
                     <View style={styles.bottom}>
-
                         <View style={styles.left}>
                             <Text style={[styles.author]}>
                                 {author.name}
@@ -130,7 +145,6 @@ class Quote extends React.Component {
                         </View>
                     </View>
                 </View>
-
             </View>
         );
     }

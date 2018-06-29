@@ -32,7 +32,7 @@ class Home extends React.Component {
                     <ActivityIndicator animating={true}/>
                 </View>
             )
-        }else{
+        } else {
             return (
                 <View style={styles.container}>
                     <FlatList

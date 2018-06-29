@@ -1,16 +1,16 @@
 import React from 'react';
 import {Text, View, TouchableOpacity, Image} from 'react-native';
 
-import {Button, SocialIcon, Divider} from 'react-native-elements'
-import {Actions} from 'react-native-router-flux'
+import {Button, SocialIcon, Divider} from 'react-native-elements';
+import {Actions} from 'react-native-router-flux';
 import {connect} from 'react-redux';
 
 import { Facebook } from 'expo';
 
-import { actions as auth, constants as c } from "../../index"
+import { actions as auth, constants as c } from "../../index";
 const { signInWithFacebook } = auth;
 
-import styles from "./styles"
+import styles from "./styles";
 
 class Welcome extends React.Component {
     constructor() {
@@ -40,7 +40,7 @@ class Welcome extends React.Component {
     }
 
     onError(error) {
-        alert(error.message);
+        alert(`**Error message coming from here**: ${error.message}`);
     }
 
     render() {
@@ -58,6 +58,23 @@ class Welcome extends React.Component {
                                 button
                                 type='facebook'
                                 title='SIGN UP WITH FACEBOOK'
+                                iconSize={19}
+                                style={[styles.containerView, styles.socialButton]}
+                                fontStyle={styles.buttonText}
+                                onPress={this.onSignInWithFacebook}/>
+
+                            <View style={styles.orContainer}>
+                                <Divider style={styles.divider} />
+                                <Text style={styles.orText}>
+                                    Or
+                                </Text>
+                            </View>
+
+                            <SocialIcon
+                                raised
+                                button
+                                type='google-plus-official'
+                                title='SIGN UP WITH GOOGLE'
                                 iconSize={19}
                                 style={[styles.containerView, styles.socialButton]}
                                 fontStyle={styles.buttonText}
@@ -91,7 +108,6 @@ class Welcome extends React.Component {
                             </TouchableOpacity>
                         </View>
                     </View>
-
                 </View>
         );
     }

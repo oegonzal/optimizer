@@ -1,6 +1,8 @@
 import React from 'react';
 import {Scene, Router, ActionConst, Stack, Modal, Tabs, Actions} from 'react-native-router-flux';
 
+import {connect} from 'react-redux';
+
 //Splash Component
 import Splash from '../components/Splash/Splash';
 
@@ -22,7 +24,12 @@ import {checkLoginStatus} from "../modules/auth/actions";
 
 import {color, navTitleStyle} from "../styles/theme";
 
-export default class extends React.Component {
+
+// TODO: find a better way to call this bc it is supposed to only be used
+// in its own component
+// import { actions as auth } from "../modules/auth/index"; 
+
+class RouterCmp extends React.Component {
     constructor() {
         super();
         this.state = {
@@ -55,6 +62,19 @@ export default class extends React.Component {
         )
     }
 
+    renderLogoutButton(props) {
+        return (
+            <NavButton onPress={this.logout}
+                       name={"logout"}
+                       type={"simple-line-icon"}
+                       color={color.black}/>
+        )
+    }
+
+    logout() {
+        // auth.
+    }
+
     renderSaveButton(props) {
         if (props.showButton) return (<SaveButton data={props.data}/>)
         else return null
@@ -67,10 +87,12 @@ export default class extends React.Component {
         return (
             <Router>
                 <Modal>
-                    <Scene key="root" hideNavBar
+                    <Scene key="root"
+                           hideNavBar
                            navigationBarStyle={{backgroundColor: "#fff"}}
                            titleStyle={navTitleStyle}
                            backButtonTintColor={color.black}>
+
                         <Stack key="Auth" initial={!this.state.isLoggedIn}>
                             <Scene key="Welcome" component={Welcome} title="" initial={true} hideNavBar/>
                             <Scene key="Register" component={Register} title="Register" back/>
@@ -81,14 +103,20 @@ export default class extends React.Component {
                         </Stack>
 
                         <Stack key="Main" initial={this.state.isLoggedIn}>
-                            <Scene key="Home" component={Home} title="Home" initial={true} type={ActionConst.REPLACE}
+                            <Scene key="Home"
+                                   component={Home} 
+                                   title="Home" 
+                                   initial={true} 
+                                   type={ActionConst.REPLACE}
+                                   renderLeftButton={this.renderLogoutButton}
                                    renderRightButton={this.renderAddButton}/>
                         </Stack>
                     </Scene>
                     <Scene key="NewQuote"
                            navigationBarStyle={{backgroundColor: "#fff"}}
                            titleStyle={navTitleStyle}
-                           component={NewQuote} title="New Quote"
+                           component={NewQuote}
+                           title="New Quote"
                            renderLeftButton={this.renderCloseButton}
                            renderRightButton={this.renderSaveButton}/>
                 </Modal>
@@ -96,3 +124,5 @@ export default class extends React.Component {
         )
     }
 }
+
+export default connect(null, null)(RouterCmp);

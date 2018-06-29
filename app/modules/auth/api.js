@@ -63,15 +63,11 @@ export function signOut (callback) {
 //Sign user in using Facebook
 export function signInWithFacebook (fbToken, callback) {
     const credential = provider.credential(fbToken);
-    auth.signInWithCredential(credential)
+    auth.signInAndRetrieveDataWithCredential(credential)
         .then((user) => getUser(user, callback))
-        .catch((error) => callback(false, null, error));
+        .catch((error) => callback(false, null, error)); // Error passing through here
 }
 
-//Sign user in using Facebook
-export function signInWithFacebook (fbToken, callback) {
-    const credential = provider.credential(fbToken);
-    auth.signInWithCredential(credential)
-        .then((user) => getUser(user, callback))
-        .catch((error) => callback(false, null, error));
+export function signInWithGoogle(token, callback) {
+
 }

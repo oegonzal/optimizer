@@ -42,7 +42,7 @@ export function resetPassword(data, successCB, errorCB) {
     return (dispatch) => {
         api.resetPassword(data, function (success, data, error) {
             if (success) successCB();
-            else if (error) errorCB(error)
+            else if (error) errorCB(error);
         });
     };
 }
@@ -53,7 +53,7 @@ export function signOut(successCB, errorCB) {
             if (success) {
                 dispatch({type: t.LOGGED_OUT});
                 successCB();
-            }else if (error) errorCB(error)
+            } else if (error) errorCB(error);
         });
     };
 }
@@ -68,13 +68,13 @@ export function checkLoginStatus(callback) {
                     if (success) {
                         if (exists) dispatch({type: t.LOGGED_IN, data: user});
                         callback(exists, isLoggedIn);
-                    }else if (error) {
+                    } else if (error) {
                         //unable to get user
                         dispatch({type: t.LOGGED_OUT});
                         callback(false, false);
                     }
                 });
-            }else {
+            } else {
                 dispatch({type: t.LOGGED_OUT});
                 callback(false, isLoggedIn)
             }
@@ -88,18 +88,7 @@ export function signInWithFacebook(facebookToken, successCB, errorCB) {
             if (success) {
                 if (data.exists) dispatch({type: t.LOGGED_IN, data: data.user});
                 successCB(data);
-            }else if (error) errorCB(error)
-        });
-    };
-}
-
-export function signInWithFacebook(facebookToken, successCB, errorCB) {
-    return (dispatch) => {
-        api.signInWithFacebook(facebookToken, function (success, data, error) {
-            if (success) {
-                if (data.exists) dispatch({type: t.LOGGED_IN, data: data.user});
-                successCB(data);
-            }else if (error) errorCB(error)
+            } else if (error) errorCB(error);
         });
     };
 }
