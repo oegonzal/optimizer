@@ -9,20 +9,33 @@ const { getQuotes } = home;
 import styles from "./styles"
 import Quote from "../../components/Quote"
 
+// For sortable list
+import SortableList from 'react-native-sortable-list';
+
 class Home extends React.Component {
     constructor() {
         super();
         this.state = {}
 
         this.renderItem = this.renderItem.bind(this);
+        this.onChangeOrder = this.onChangeOrder.bind(this);
+        this.onReleaseRow = this.onReleaseRow.bind(this);
     }
 
     componentDidMount() {
         this.props.getQuotes((error) => alert(error.message))
     }
 
-    renderItem({item, index}) {
-        return <Quote index={index}/>
+    renderItem({item, index, active}) {
+        return <Quote index={index} active={active}/>
+    }
+
+    onChangeOrder(nextOrder) {
+        // TODO: Call action to change state in redux store only
+    }
+
+    onReleaseRow(key) {
+        // TODO: Save state in remote firebase db too
     }
 
     render() {
@@ -35,12 +48,13 @@ class Home extends React.Component {
         } else {
             return (
                 <View style={styles.container}>
-                    <FlatList
-                        ref='listRef'
+                   <SortableList
+                        style={styles.list}
+                        contentContainerStyle={styles.contentContainer}
                         data={this.props.quotes}
-                        renderItem={this.renderItem}
-                        initialNumToRender={5}
-                        keyExtractor={(item, index) => index.toString()}/>
+                        renderRow={this.renderItem}
+                        onChangeOrder={this.onChangeOrder}
+                        onReleaseRow={this.onReleaseRow} />
                 </View>
             );
         }

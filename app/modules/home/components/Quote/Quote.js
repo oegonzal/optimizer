@@ -1,6 +1,13 @@
 import React from 'react';
 
-import { Text, View, TouchableOpacity } from 'react-native';
+import { 
+    Text, 
+    View, 
+    TouchableOpacity,
+    Animated,        // For sortable list
+    Easing,
+    Platform,
+} from 'react-native';
 import ActionSheet from 'react-native-actionsheet';
 
 import { Icon } from 'react-native-elements'
@@ -33,7 +40,50 @@ class Quote extends React.Component {
 
         this.showActionSheet = this.showActionSheet.bind(this);
         this.handlePress = this.handlePress.bind(this);
+
+
+        // For sortable list
+        this._active = new Animated.Value(0);
+        this._style = {
+            ...Platform.select({
+                ios: {
+                transform: [{
+                    scale: this._active.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [1, 1.1],
+                    }),
+                }],
+                shadowRadius: this._active.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [2, 10],
+                }),
+                },
+
+                android: {
+                transform: [{
+                    scale: this._active.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [1, 1.07],
+                    }),
+                }],
+                elevation: this._active.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [2, 6],
+                }),
+                },
+            })
+        };
     }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.active !== nextProps.active) {
+          Animated.timing(this._active, {
+            duration: 300,
+            easing: Easing.bounce,
+            toValue: Number(nextProps.active),
+          }).start();
+        }
+      }
 
     showActionSheet() {
         this.ActionSheet.show();
@@ -122,7 +172,8 @@ class Quote extends React.Component {
         const { text, author, time, color, userId } = quote;
 
         return (
-            <View style={[styles.container]}>
+            // For Sortable list:
+            <Animated.View style={[styles.container, this._style,]}>
                 <View style={[styles.wrapper, {backgroundColor: color, borderColor: color}]}>
                     <View style={[styles.quote]}>
                         <Text style={[styles.text]}>
@@ -145,7 +196,7 @@ class Quote extends React.Component {
                         </View>
                     </View>
                 </View>
-            </View>
+            </Animated.View>
         );
     }
 }

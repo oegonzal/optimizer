@@ -30,6 +30,10 @@ export default class BasicList extends Component {
   }
 }
 
+
+
+
+// Row component
 class Row extends Component {
 
   constructor(props) {
@@ -93,6 +97,8 @@ class Row extends Component {
   }
 }
 
+
+// Styles
 const styles = StyleSheet.create({
   // container: {
   //   flex: 1,
