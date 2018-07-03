@@ -28,7 +28,7 @@ class SaveButton extends React.Component {
         else this.saveQuote()
     }
 
-    editQuote(){
+    editQuote() {
         let { data } = this.props;
         const { text, color, quote } = data;
 
@@ -38,7 +38,7 @@ class SaveButton extends React.Component {
         this.props.updateQuote(quote, this.onSuccess, this.onError)
     }
 
-    saveQuote(){
+    saveQuote() {
         const { data, user } = this.props;
         const { text, color } = data;
 
@@ -53,14 +53,14 @@ class SaveButton extends React.Component {
             }
         };
 
-        this.props.addQuote(newQuote, this.onSuccess, this.onError)
+        this.props.addQuote(newQuote, this.onSuccess, this.onError);
     }
 
-    onSuccess(){
+    onSuccess() {
         Actions.pop();
     }
 
-    onError(error){
+    onError(error) {
         alert(error.message)
     }
 

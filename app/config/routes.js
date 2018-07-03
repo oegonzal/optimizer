@@ -108,7 +108,7 @@ class RouterCmp extends React.Component {
                                    title="Home" 
                                    initial={true} 
                                    type={ActionConst.REPLACE}
-                                   renderLeftButton={this.renderLogoutButton}
+                                //    renderLeftButton={this.renderLogoutButton}
                                    renderRightButton={this.renderAddButton}/>
                         </Stack>
                     </Scene>

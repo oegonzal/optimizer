@@ -96,20 +96,12 @@ export default class SearchPage extends Component<Props> {
   		<ActivityIndicator size='large'/> : null;
 	  return (
 		<View style={styles.container}>
-		  {/* <Text style={styles.welcome}>
-				Welcome to React Native!
-			</Text>
-			<Text style={styles.instructions}>
-				{instructions}
-			</Text> */}
-
 		  <Text style={styles.description}>
 				Search for houses to buy!
 		  </Text>
 		  <Text style={styles.description}>
 				Search by place-name or postcode.
 		  </Text>
-			
 
 			<View style={styles.flowRight}>
 				<TextInput

@@ -118,52 +118,52 @@ class Quote extends React.Component {
     }
 
     renderOptionButton() {
-        return(
-            <View style={styles.right}>
-                <TouchableOpacity onPress={this.showActionSheet}>
-                    <View style={styles.buttonContainer}>
-                        <Icon
-                            name={'md-more'}
-                            type='ionicon'
-                            color='#fff'
-                            size={normalize(20)}
-                        />
-                    </View>
-                </TouchableOpacity>
-                <ActionSheet
-                    ref={o => this.ActionSheet = o}
-                    options={options}
-                    cancelButtonIndex={CANCEL_INDEX}
-                    destructiveButtonIndex={DESTRUCTIVE_INDEX}
-                    onPress={this.handlePress}
-                />
-            </View>
-        )
+		return(
+			<View style={styles.right}>
+				<TouchableOpacity onPress={this.showActionSheet}>
+					<View style={styles.buttonContainer}>
+						<Icon
+							name={'md-more'}
+							type='ionicon'
+							color='#fff'
+							size={normalize(20)}
+						/>
+					</View>
+				</TouchableOpacity>
+				<ActionSheet
+					ref={o => this.ActionSheet = o}
+					options={options}
+					cancelButtonIndex={CANCEL_INDEX}
+					destructiveButtonIndex={DESTRUCTIVE_INDEX}
+					onPress={this.handlePress}
+				/>
+			</View>
+		)
     }
 
     renderLoveButton(){
         const { user, quotes, index } = this.props;
         const quote = quotes[index];
-        const { loves } = quote;
+		const { loves } = quote;
 
-        return(
-            <TouchableOpacity onPress={this.onToggleLove}>
-                <View style={styles.buttonContainer}>
-                    <Icon
-                        name={
-                            (loves && loves[user.uid]) ?
-                                'md-heart'
-                                :
-                                'md-heart-outline'
-                        }
-                        type='ionicon'
-                        color='#fff'
-                        iconStyle={{height:normalize(20)}}
-                        size={normalize(20)}
-                    />
-                </View>
-            </TouchableOpacity>
-        )
+		return(
+			<TouchableOpacity onPress={this.onToggleLove}>
+				<View style={styles.buttonContainer}>
+					<Icon
+						name={
+							(loves && loves[user.uid]) ?
+								'md-heart'
+								:
+								'md-heart-outline'
+						}
+						type='ionicon'
+						color='#fff'
+						iconStyle={{height:normalize(20)}}
+						size={normalize(20)}
+					/>
+				</View>
+			</TouchableOpacity>
+		)
     }
 
     render() {
@@ -171,33 +171,45 @@ class Quote extends React.Component {
         const quote = quotes[index];
         const { text, author, time, color, userId } = quote;
 
-        return (
-            // For Sortable list:
-            <Animated.View style={[styles.container, this._style,]}>
-                <View style={[styles.wrapper, {backgroundColor: color, borderColor: color}]}>
-                    <View style={[styles.quote]}>
-                        <Text style={[styles.text]}>
-                            {text}
-                        </Text>
-                        {(user.uid === userId) && this.renderOptionButton()}
-                    </View>
+		if (this.props.row) {
+			return (
+				<Animated.View style={[
+					styles.row,
+					this._style,
+				  ]}>
+					<Image source={{uri: data.image}} style={styles.image} />
+					<Text style={styles.text}>{data.text}</Text>
+				  </Animated.View>
+			);
+		} else {
+			return (
+				// For Sortable list:
+				<Animated.View style={[styles.container, this._style,]}>
+					<View style={[styles.wrapper, {backgroundColor: color, borderColor: color}]}>
+						<View style={[styles.quote]}>
+							<Text style={[styles.text]}>
+								{text}
+							</Text>
+							{(user.uid === userId) && this.renderOptionButton()}
+						</View>
 
-                    <View style={styles.bottom}>
-                        <View style={styles.left}>
-                            <Text style={[styles.author]}>
-                                {author.name}
-                            </Text>
-                            <Text style={[styles.publishedAt]}>
-                                {moment(time).fromNow()}
-                            </Text>
-                        </View>
-                        <View style={styles.right}>
-                            {this.renderLoveButton()}
-                        </View>
-                    </View>
-                </View>
-            </Animated.View>
-        );
+						<View style={styles.bottom}>
+							<View style={styles.left}>
+								<Text style={[styles.author]}>
+									{author.name}
+								</Text>
+								<Text style={[styles.publishedAt]}>
+									{moment(time).fromNow()}
+								</Text>
+							</View>
+							<View style={styles.right}>
+								{this.renderLoveButton()}
+							</View>
+						</View>
+					</View>
+				</Animated.View>
+			);
+		}
     }
 }
 
@@ -209,3 +221,91 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, { deleteQuote, toggleLove })(Quote);
+
+// Row component
+class Row extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this._active = new Animated.Value(0);
+
+    this._style = {
+      ...Platform.select({
+        ios: {
+          transform: [{
+            scale: this._active.interpolate({
+              inputRange: [0, 1],
+              outputR<Animated.View style={[
+        styles.row,
+        this._style,
+      ]}>
+        <Image source={{uri: data.image}} style={styles.image} />
+        <Text style={styles.text}>{data.text}</Text>
+      </Animated.View>ange: [1, 1.1],
+            }),<Animated.View style={[
+        styles.row,
+        this._style,
+      ]}>
+        <Image source={{uri: data.image}} style={styles.image} />
+        <Text style={styles.text}>{data.text}</Text>
+      </Animated.View>
+          }],<Animated.View style={[
+        styles.row,
+        this._style,
+      ]}>
+        <Image source={{uri: data.image}} style={styles.image} />
+        <Text style={styles.text}>{data.text}</Text>
+      </Animated.View>
+          shadowRadiu<Animated.View style={[
+        styles.row,
+        this._style,
+      ]}>
+        <Image source={{uri: data.image}} style={styles.image} />
+        <Text style={styles.text}>{data.text}</Text>
+      </Animated.View>s: this._active.interpolate({
+            inputRange: [0, 1],
+            outputRange: [2, 10],
+          }),
+        },
+
+        android: {
+          transform: [{
+            scale: this._active.interpolate({
+              inputRange: [0, 1],
+              outputRange: [1, 1.07],
+            }),
+          }],
+          elevation: this._active.interpolate({
+            inputRange: [0, 1],
+            outputRange: [2, 6],
+          }),
+        },
+      })
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.active !== nextProps.active) {
+      Animated.timing(this._active, {
+        duration: 300,
+        easing: Easing.bounce,
+        toValue: Number(nextProps.active),
+      }).start();
+    }
+  }
+
+  render() {
+   const {data, active} = this.props;
+
+    return (
+      <Animated.View style={[
+        styles.row,
+        this._style,
+      ]}>
+        <Image source={{uri: data.image}} style={styles.image} />
+        <Text style={styles.text}>{data.text}</Text>
+      </Animated.View>
+    );
+  }
+}

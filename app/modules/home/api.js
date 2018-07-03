@@ -38,6 +38,11 @@ export function updateQuote(quote, callback) {
         .catch((error) => callback(false, null, error));
 }
 
+export function updateNewOrder(quotesInNewOrder) {
+    // TODO: may be able to get away by using updateQuote function above
+    // All you have to do is make an object of the keys you want to update
+}
+
 export function deleteQuote(quote, callback) {
     const { id, userId } = quote;
 
