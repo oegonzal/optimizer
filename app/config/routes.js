@@ -20,7 +20,7 @@ import SaveButton from '../modules/home/components/SaveButton';
 
 //Import Store, actions
 import store from '../redux/store'
-import {checkLoginStatus} from "../modules/auth/actions";
+import { checkLoginStatus, logoutFromSession } from "../modules/auth/actions";
 
 import {color, navTitleStyle} from "../styles/theme";
 
@@ -36,6 +36,9 @@ class RouterCmp extends React.Component {
             isReady: false,
             isLoggedIn: false
         }
+
+        this.renderLogoutButton = this.renderLogoutButton.bind(this);
+        this.logout = this.logout.bind(this);
     }
 
     componentDidMount() {
@@ -48,7 +51,8 @@ class RouterCmp extends React.Component {
     renderAddButton(props) {
         return (
             <NavButton onPress={Actions.NewQuote}
-                       name={"plus"} type={"entypo"}
+                       name={"plus"}
+                       type={"entypo"}
                        color={color.black}/>
         )
     }
@@ -72,7 +76,12 @@ class RouterCmp extends React.Component {
     }
 
     logout() {
-        // auth.
+        logoutFromSession();
+        this.setState(prevState => {
+            return { isLoggedIn: false };
+        });
+        // Actions.pop();
+        Actions.Auth();
     }
 
     renderSaveButton(props) {
@@ -108,7 +117,7 @@ class RouterCmp extends React.Component {
                                    title="Home" 
                                    initial={true} 
                                    type={ActionConst.REPLACE}
-                                //    renderLeftButton={this.renderLogoutButton}
+                                   renderLeftButton={this.renderLogoutButton}
                                    renderRightButton={this.renderAddButton}/>
                         </Stack>
                     </Scene>
@@ -125,4 +134,5 @@ class RouterCmp extends React.Component {
     }
 }
 
+// I have to connect logout state & trigger to logout through prop
 export default connect(null, null)(RouterCmp);

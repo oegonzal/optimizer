@@ -10,8 +10,7 @@ export function register(data, successCB, errorCB) {
             if (success) {
                 dispatch({type: t.LOGGED_IN, data});
                 successCB(data);
-            }
-            else if (error) errorCB(error)
+            } else if (error) errorCB(error)
         });
     };
 }
@@ -22,7 +21,7 @@ export function createUser(user, successCB, errorCB) {
             if (success) {
                 dispatch({type: t.LOGGED_IN, data: user});
                 successCB();
-            }else if (error) errorCB(error)
+            } else if (error) errorCB(error)
         });
     };
 }
@@ -33,7 +32,7 @@ export function login(data, successCB, errorCB) {
             if (success) {
                 if (data.exists) dispatch({type: t.LOGGED_IN, data: data.user});
                 successCB(data);
-            }else if (error) errorCB(error)
+            } else if (error) errorCB(error)
         });
     };
 }
@@ -79,6 +78,12 @@ export function checkLoginStatus(callback) {
                 callback(false, isLoggedIn)
             }
         });
+    };
+}
+
+export function logoutFromSession() {
+    return (dispatch) => {
+        dispatch({ type: t.LOGGED_OUT });
     };
 }
 
