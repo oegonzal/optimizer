@@ -3,13 +3,13 @@ import * as api from './api';
 
 export function changeOrder(currentQuotesIndexOrder) {
     return (dispatch) => {
-        dispatch({type: t.LIST_ORDER_CHANGE, currentQuotesIndexOrder});
+        // dispatch({type: t.LIST_ORDER_CHANGE, currentQuotesIndexOrder});
     };
 }
 
 export function dropListElement(index) {
     return (dispatch) => {
-        dispatch({type: t.LIST_ELEMENT_DROP}, index);
+        // dispatch({type: t.LIST_ELEMENT_DROP}, index);
         // save new order to firebase
     };
 }

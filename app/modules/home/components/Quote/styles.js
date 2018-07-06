@@ -1,7 +1,9 @@
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 
 import { theme } from "../../index"
+
 const {padding, color, fontFamily, normalize } = theme;
+const window = Dimensions.get('window');
 
 const styles = StyleSheet.create({
     container:{
@@ -42,6 +44,18 @@ const styles = StyleSheet.create({
         flex:1
     },
 
+    image: {
+        width: 50,
+        height: 50,
+        marginRight: 30,
+        borderRadius: 25,
+    },
+
+    text2: {
+        fontSize: 24,
+        color: '#222222',
+    },
+
     bottom:{
         flexDirection: "row",
         marginTop: padding * 2,
@@ -80,7 +94,36 @@ const styles = StyleSheet.create({
         alignItems:"center",
         width: 54,
         height: 34,
-    }
+    },
+
+    row: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        padding: 16,
+        height: 80,
+        flex: 1,
+        marginTop: 7,
+        marginBottom: 12,
+        borderRadius: 4,
+    
+    
+        ...Platform.select({
+          ios: {
+            width: window.width - 30 * 2,
+            shadowColor: 'rgba(0,0,0,0.2)',
+            shadowOpacity: 1,
+            shadowOffset: {height: 2, width: 2},
+            shadowRadius: 2,
+          },
+    
+          android: {
+            width: window.width - 30 * 2,
+            elevation: 0,
+            marginHorizontal: 30,
+          },
+        })
+    },
 });
 
 
