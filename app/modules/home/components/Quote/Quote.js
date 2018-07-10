@@ -7,28 +7,27 @@ import {
     Animated,        // For sortable list
     Easing,
     Platform,
-    Image,
 } from 'react-native';
 import ActionSheet from 'react-native-actionsheet';
 
-import { Icon } from 'react-native-elements'
+import { Icon } from 'react-native-elements';
 import moment from "moment";
 
-import styles from "./styles"
+import styles from "./styles";
 import { connect } from "react-redux";
 
-import { actions, theme } from "../../index"
+import { actions, theme } from "../../index";
 import { Actions } from "react-native-router-flux";
 
-const { deleteQuote, toggleLove } = actions;
+const { deleteQuote, toggleLove, updateListOrder } = actions;
 const { normalize } = theme;
 
 // Buttons and indexes for Action Sheet
-const options = [ 'Edit', 'Delete', 'Cancel'];
+const options = [ 'Edit', 'Delete', 'Cancel', 'Save Order' ];
 const CREATE_INDEX = 0;
 const DESTRUCTIVE_INDEX = 1;
 const CANCEL_INDEX = 2;
-
+const SAVE_ORDER_INDEX = 3;
 
 class Quote extends React.Component {
     constructor() {
@@ -77,14 +76,14 @@ class Quote extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.active !== nextProps.active) {
-          Animated.timing(this._active, {
-            duration: 300,
-            easing: Easing.bounce,
-            toValue: Number(nextProps.active),
-          }).start();
-        }
+      if (this.props.active !== nextProps.active) {
+        Animated.timing(this._active, {
+          duration: 300,
+          easing: Easing.bounce,
+          toValue: Number(nextProps.active),
+        }).start();
       }
+    }
 
     showActionSheet() {
         this.ActionSheet.show();
@@ -96,9 +95,16 @@ class Quote extends React.Component {
 
         if (buttonIndex === CREATE_INDEX) {
             Actions.NewQuote({ edit:true, quote });
-        }
-        else if (buttonIndex === DESTRUCTIVE_INDEX) {
+        } else if (buttonIndex === DESTRUCTIVE_INDEX) {
             this.onDelete();
+        } else if (buttonIndex === SAVE_ORDER_INDEX) {
+          const quotes =
+            (this.props.quoteOrder || []).map((origQuoteInd, arrInd) => {
+              const quote = this.props.quotes[origQuoteInd];
+              quote.orderNumber = arrInd;
+              return quote;
+            });
+          this.props.updateListOrder(quotes);
         }
     }
 
@@ -119,27 +125,27 @@ class Quote extends React.Component {
     }
 
     renderOptionButton() {
-		return(
-			<View style={styles.right}>
-				<TouchableOpacity onPress={this.showActionSheet}>
-					<View style={styles.buttonContainer}>
-						<Icon
-							name={'md-more'}
-							type='ionicon'
-							color='#fff'
-							size={normalize(20)}
-						/>
-					</View>
-				</TouchableOpacity>
-				<ActionSheet
-					ref={o => this.ActionSheet = o}
-					options={options}
-					cancelButtonIndex={CANCEL_INDEX}
-					destructiveButtonIndex={DESTRUCTIVE_INDEX}
-					onPress={this.handlePress}
-				/>
-			</View>
-		)
+      return(
+        <View style={styles.right}>
+          <TouchableOpacity onPress={this.showActionSheet}>
+            <View style={styles.buttonContainer}>
+              <Icon
+                name={'md-more'}
+                type='ionicon'
+                color='#fff'
+                size={normalize(20)}
+              />
+            </View>
+          </TouchableOpacity>
+          <ActionSheet
+            ref={o => this.ActionSheet = o}
+            options={options}
+            cancelButtonIndex={CANCEL_INDEX}
+            destructiveButtonIndex={DESTRUCTIVE_INDEX}
+            onPress={this.handlePress}
+          />
+        </View>
+      )
     }
 
     renderLoveButton(){
@@ -168,60 +174,45 @@ class Quote extends React.Component {
     }
 
     render() {
-      const { user, quotes, index, row, data } = this.props;
-      const quote = quotes[index];
-      // const { text, author, time, color, userId } = quote;
+      const { user, quotes, index, data } = this.props;
       const { text, author, time, color, userId } = data;
 
-      if (row) {
-        return (
-          <Animated.View style={[
-              styles.row,
-              this._style,
-            ]}>
-              <Image source={{uri: data.image}} style={styles.image} />
-              <Text style={styles.text2}>{data.text}</Text>
-          </Animated.View>
-        );
-      } else {
-        return (
-          // For Sortable list:
-          <Animated.View style={[styles.container, this._style,]}>
-            <View style={[styles.wrapper, {backgroundColor: color, borderColor: color}]}>
-              <View style={[styles.quote]}>
-                <Text style={[styles.text]}>
-                  {text}
-                </Text>
-                {(user.uid === userId) && this.renderOptionButton()}
-              </View>
+      return (
+        // For Sortable list:
+        <Animated.View style={[styles.container, this._style,]}>
+          <View style={[styles.wrapper, {backgroundColor: color, borderColor: color}]}>
+            <View style={[styles.quote]}>
+              <Text style={[styles.text]}>
+                {text}
+              </Text>
+              {(user.uid === userId) && this.renderOptionButton()}
+            </View>
 
-              <View style={styles.bottom}>
-                <View style={styles.left}>
-                  <Text style={[styles.author]}>
-                    {author.name}
-                  </Text>
-                  <Text style={[styles.publishedAt]}>
-                    {moment(time).fromNow()}
-                  </Text>
-                </View>
-                <View style={styles.right}>
-                  {this.renderLoveButton()}
-                </View>
+            <View style={styles.bottom}>
+              <View style={styles.left}>
+                <Text style={[styles.author]}>
+                  {author.name}
+                </Text>
+                <Text style={[styles.publishedAt]}>
+                  {moment(time).fromNow()}
+                </Text>
+              </View>
+              <View style={styles.right}>
+                {this.renderLoveButton()}
               </View>
             </View>
-          </Animated.View>
-        );
-      }
-
-
+          </View>
+        </Animated.View>
+      );
     }
 }
 
 function mapStateToProps(state, props) {
     return {
         user: state.authReducer.user,
-        quotes: state.homeReducer.quotes
+        quotes: state.homeReducer.quotes,
+        quoteOrder: state.homeReducer.currentQuotesIndexOrder
     }
 }
 
-export default connect(mapStateToProps, { deleteQuote, toggleLove })(Quote);
+export default connect(mapStateToProps, { deleteQuote, toggleLove, updateListOrder })(Quote);

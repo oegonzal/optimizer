@@ -1,16 +1,24 @@
 import * as t from './actionTypes';
 import * as api from './api';
 
+export function updateListOrder(quotes) {
+    return (dispatch) => {
+        api.updateQuoteOrder(quotes);
+    };
+}
+
 export function changeOrder(currentQuotesIndexOrder) {
     return (dispatch) => {
+        // Use this action when an item is getting switched on the list
         dispatch({type: t.LIST_ORDER_CHANGE, currentQuotesIndexOrder});
     };
 }
 
 export function dropListElement(index) {
     return (dispatch) => {
-        dispatch({type: t.LIST_ELEMENT_DROP}, index);
-        // save new order to firebase
+        // Use this action when an items gets dropped/switched in the list
+        // dispatch({type: t.LIST_ELEMENT_DROP}, index);
+        // api.updateNewOrder
     };
 }
 
@@ -48,6 +56,7 @@ export function updateQuote(quote, successCB, errorCB) {
 // Delete Quote - DELETE (D)
 export function deleteQuote(quote, errorCB) {
     return (dispatch) => {
+        dispatch({type: t.QUOTE_DELETED, quote});
         api.deleteQuote(quote, function (success, data, error) {
             if (error) errorCB(error)
         });

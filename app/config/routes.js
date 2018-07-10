@@ -1,5 +1,6 @@
 import React from 'react';
-import {Scene, Router, ActionConst, Stack, Modal, Tabs, Actions} from 'react-native-router-flux';
+import {Scene, Router, ActionConst, Stack, Modal, Tabs, Actions}
+    from 'react-native-router-flux';
 
 import {connect} from 'react-redux';
 
@@ -19,7 +20,7 @@ import NavButton from '../components/NavButton';
 import SaveButton from '../modules/home/components/SaveButton';
 
 //Import Store, actions
-import store from '../redux/store'
+import store from '../redux/store';
 import { checkLoginStatus, logoutFromSession } from "../modules/auth/actions";
 
 import {color, navTitleStyle} from "../styles/theme";
@@ -28,6 +29,12 @@ import {color, navTitleStyle} from "../styles/theme";
 // TODO: find a better way to call this bc it is supposed to only be used
 // in its own component
 // import { actions as auth } from "../modules/auth/index"; 
+
+
+/**
+ * Consider putting the sandwhich icon on the right side of the header
+ * then opening the action sheet with the different options
+ */
 
 class RouterCmp extends React.Component {
     constructor() {

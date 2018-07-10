@@ -35,6 +35,22 @@ const homeReducer = (state = initialState, action) => {
             return {...state, quotes, isLoading: false};
         }
 
+        case t.QUOTE_DELETED: {
+            const { quote } = action;
+            const { quotes, currentQuotesIndexOrder } = state;
+
+            if (currentQuotesIndexOrder) {
+                for ( let i = 0; i < quotes.length; i++ ) {
+                    if (quotes[i].id === quote.id) {
+                        currentQuotesIndexOrder.splice(i, 1);
+                        break;
+                    }
+                }
+            }
+
+            return {...state, currentQuotesIndexOrder};
+        }
+
         case t.LIST_ORDER_CHANGE: {
             let { currentQuotesIndexOrder } = action;
             return { ...state, currentQuotesIndexOrder };
