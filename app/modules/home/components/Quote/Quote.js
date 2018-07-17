@@ -40,7 +40,7 @@ class Quote extends React.Component {
 
         this.showActionSheet = this.showActionSheet.bind(this);
         this.handlePress = this.handlePress.bind(this);
-
+        this.renderDescription = this.renderDescription.bind(this);
 
         // For sortable list
         this._active = new Animated.Value(0);
@@ -173,9 +173,20 @@ class Quote extends React.Component {
       )
     }
 
+    renderDescription(description) {
+      return (
+        <View style={[styles.quote]}>
+          <Text style={[styles.text]}>
+            {description}
+          </Text>
+        </View>
+      );
+    }
+
     render() {
       const { user, quotes, index, data } = this.props;
-      const { text, author, time, color, userId } = data;
+      const { text, title, description, deadline, effortPoints,
+              priorityLevel, author, time, color, userId } = data;
 
       return (
         // For Sortable list:
@@ -186,6 +197,14 @@ class Quote extends React.Component {
                 {text}
               </Text>
               {(user.uid === userId) && this.renderOptionButton()}
+            </View>
+
+            {!!description && this.renderDescription(description)}
+
+            <View style={[styles.quote]}>
+              <Text style={[styles.text]}>Deadline: {deadline}</Text>
+              <Text style={[styles.text]}>Points: {effortPoints}</Text>
+              <Text style={[styles.text]}>Level: {priorityLevel}</Text>
             </View>
 
             <View style={styles.bottom}>

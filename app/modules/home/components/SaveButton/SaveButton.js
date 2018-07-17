@@ -30,28 +30,40 @@ class SaveButton extends React.Component {
 
     editQuote() {
         let { data } = this.props;
-        const { text, color, quote } = data;
+        const { color, quote, title, description, deadline, effortPoints, priorityLevel } = data;
 
-        quote['text'] = text;
         quote['color'] = color;
+        quote['title'] = title;
+        quote['description'] = description;
+        quote['deadline'] = deadline;
+        quote['effortPoints'] = effortPoints;
+        quote['priorityLevel'] = priorityLevel;
 
         this.props.updateQuote(quote, this.onSuccess, this.onError)
     }
 
     saveQuote() {
         const { data, user } = this.props;
-        const { text, color } = data;
+        const {color, title, description, deadline, effortPoints, priorityLevel } = data;
 
         const newQuote = {
-            text: text,
             color,
             time: Date.now(),
             userId: user.uid,
             loveCount: 0,
             author: {
                 name: user.username
-            }
+            },
+            title,
+            description,
+            deadline,
+            effortPoints,
+            priorityLevel
         };
+
+        // Remove
+        console.log('Save quote from button, newQuote: ');
+        console.log(newQuote);
 
         this.props.addQuote(newQuote, this.onSuccess, this.onError);
     }

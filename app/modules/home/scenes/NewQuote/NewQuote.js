@@ -19,7 +19,13 @@ class NewQuote extends React.Component {
 
         this.state = {
             text: (props.edit) ? props.quote.text : "",
-            color: (props.edit) ? props.quote.color : colors[0]
+            color: (props.edit) ? props.quote.color : colors[0],
+
+            title: (props.edit) ? props.quote.title : "",
+            description: (props.edit) ? props.quote.description : "",
+            deadline: (props.edit) ? props.quote.deadline : "",
+            effortPoints: (props.edit) ? props.quote.effortPoints : "",
+            priorityLevel: (props.edit) ? props.quote.priorityLevel : "",
         };
 
         this.onChangeText = this.onChangeText.bind(this);
@@ -30,18 +36,26 @@ class NewQuote extends React.Component {
         Actions.refresh({showButton: false});
     }
 
-    onChangeText(text) {
-        const { color } = this.state;
+    onChangeText(text, type) {
+        const { color, title, description, deadline, effortPoints, priorityLevel } = this.state;
 
-        const showButton = (text.trim().length > 0);
+        const showButton = (
+            this.state.title.trim().length > 0
+            && this.state.description.trim().length > 0
+            && this.state.deadline.trim().length > 0
+            && this.state.effortPoints.trim().length > 0
+            && this.state.priorityLevel.trim().length > 0
+         );
 
-        const edit = (this.props.edit); //check if in edit mode
+        const edit = (this.props.edit); // check if in edit mode
 
-        let data = {text, color, edit}
+        let data = {color, edit, title, description, deadline, effortPoints, priorityLevel};
 
         if (edit) data['quote'] = this.props.quote;
 
-        this.setState({text});
+        const newStateSection = {};
+        newStateSection[type] = text;
+        this.setState(newStateSection);
 
         Actions.refresh({showButton, data});
     }
@@ -55,12 +69,40 @@ class NewQuote extends React.Component {
             <View style={styles.container}>
                 <View style={styles.topContainer}>
                     <TextInput
-                        multiline={true}
-                        onChangeText={this.onChangeText}
-                        placeholder={"Enter Quote"}
-                        style={[styles.textInput, {backgroundColor: this.state.color}]}
-                        value={this.state.text}
+                        onChangeText={(text) => this.onChangeText(text, 'title')}
+                        placeholder={"Enter Title"}
+                        style={[styles.textInput, { backgroundColor: this.state.color }]}
+                        value={this.state.title}
                         autoFocus={true}
+                        placeholderTextColor={"#ccc"}
+                    />
+                    <TextInput
+                        multiline={true}
+                        onChangeText={(text) => this.onChangeText(text, 'description')}
+                        placeholder={"Enter Description"}
+                        style={[styles.textInput, {backgroundColor: this.state.color}]}
+                        value={this.state.description}
+                        placeholderTextColor={"#ccc"}
+                    />
+                    <TextInput
+                        onChangeText={(text) => this.onChangeText(text, 'deadline')}
+                        placeholder={"Enter Deadline"}
+                        style={[styles.textInput, {backgroundColor: this.state.color}]}
+                        value={this.state.deadline}
+                        placeholderTextColor={"#ccc"}
+                    />
+                    <TextInput
+                        onChangeText={(text) => this.onChangeText(text, 'effortPoints')}
+                        placeholder={"Enter Effort Points"}
+                        style={[styles.textInput, {backgroundColor: this.state.color}]}
+                        value={this.state.effortPoints}
+                        placeholderTextColor={"#ccc"}
+                    />
+                    <TextInput
+                        onChangeText={(text) => this.onChangeText(text, 'priorityLevel')}
+                        placeholder={"Enter Priority Level"}
+                        style={[styles.textInput, {backgroundColor: this.state.color}]}
+                        value={this.state.priorityLevel}
                         placeholderTextColor={"#ccc"}
                     />
                 </View>

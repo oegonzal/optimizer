@@ -17,7 +17,12 @@ export function addQuote(quote, callback) {
         .catch((error) => callback(false, null, error));
 }
 
+// TODO: consider having superadmin that has a further bucket
+// to be able to see a level higher
+
 export function getQuotes(callback) {
+    // TODO: Make this by bucket or userId
+
     const quotesRef = database.ref('quotes');
 
     //start listening for new data
