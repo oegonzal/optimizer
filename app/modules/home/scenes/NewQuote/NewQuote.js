@@ -11,7 +11,7 @@ const colors = [
     "#EB623A", "#FF553F", "#4F6384", "#E9C9B4", "#F7CDC2",
     "#EFDFC8", "#4E57D4", "#E6A78C",
     "#FE7D72", "#5096CF", "#F99B70", "#646A6A",
-]
+];
 
 class NewQuote extends React.Component {
     constructor(props) {

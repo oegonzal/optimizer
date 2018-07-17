@@ -15,6 +15,7 @@ import Login from '../modules/auth/scenes/Login';
 import ForgotPassword from '../modules/auth/scenes/ForgotPassword';
 import Home from '../modules/home/scenes/Home';
 import NewQuote from '../modules/home/scenes/NewQuote';
+import NewBucket from '../modules/home/scenes/NewBucket';
 
 import NavButton from '../components/NavButton';
 import SaveButton from '../modules/home/components/SaveButton';
@@ -24,6 +25,7 @@ import store from '../redux/store';
 import { checkLoginStatus, logoutFromSession } from "../modules/auth/actions";
 
 import {color, navTitleStyle} from "../styles/theme";
+
 
 
 // TODO: find a better way to call this bc it is supposed to only be used
@@ -46,6 +48,7 @@ class RouterCmp extends React.Component {
 
         this.renderLogoutButton = this.renderLogoutButton.bind(this);
         this.logout = this.logout.bind(this);
+        // this.onPressShowActionSheet = this.onPressShowActionSheet.bind(this);
     }
 
     componentDidMount() {
@@ -82,6 +85,11 @@ class RouterCmp extends React.Component {
         )
     }
 
+    renderSaveButton(props) {
+        if (props.showButton) return (<SaveButton data={props.data}/>);
+        else return null;
+    }
+
     logout() {
         logoutFromSession();
         this.setState(prevState => {
@@ -91,9 +99,13 @@ class RouterCmp extends React.Component {
         Actions.Auth();
     }
 
-    renderSaveButton(props) {
-        if (props.showButton) return (<SaveButton data={props.data}/>)
-        else return null
+    onPressShowActionSheet() {
+        return (
+            <NavButton appNav={true}
+                       name={"md-more"}
+                       type={"ionicon"}
+                       color={color.black}/>
+        )
     }
 
     render() {
@@ -125,7 +137,7 @@ class RouterCmp extends React.Component {
                                    initial={true} 
                                    type={ActionConst.REPLACE}
                                    renderLeftButton={this.renderLogoutButton}
-                                   renderRightButton={this.renderAddButton}/>
+                                   renderRightButton={this.onPressShowActionSheet}/>
                         </Stack>
                     </Scene>
                     <Scene key="NewQuote"
@@ -133,6 +145,18 @@ class RouterCmp extends React.Component {
                            titleStyle={navTitleStyle}
                            component={NewQuote}
                            title="New Quote"
+                           renderLeftButton={this.renderCloseButton}
+                           renderRightButton={this.renderSaveButton}/>
+
+                    {/* 1. Need to create a NewBucket page (after this just put list in main page
+                                for speed of test/implementation)
+                        2. And a bucket list page */}
+
+                    <Scene key="NewBucket"
+                           navigationBarStyle={{backgroundColor: "#fff"}}
+                           titleStyle={navTitleStyle}
+                           component={NewBucket}
+                           title="New Bucket"
                            renderLeftButton={this.renderCloseButton}
                            renderRightButton={this.renderSaveButton}/>
                 </Modal>

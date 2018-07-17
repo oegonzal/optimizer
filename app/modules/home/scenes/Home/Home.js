@@ -17,10 +17,11 @@ import SortableList from 'react-native-sortable-list';
 
 
 // Buttons and indexes for Action Sheet
-const options = [ 'Select Tasks', 'Go to Bucket', 'Cancel'];
-const SELECT_TASK_INDEX = 0;
+const options = [ 'Select Tasks', 'Go to Bucket', 'Create a Bucket', 'Cancel'];
+const SELECT_BUCKET_TASKS_INDEX = 0;
 const GO_TO_BUCKET_INDEX = 1;
-const CANCEL_INDEX = 2;
+const CREATE_A_BUCKET_INDEX = 2;
+const CANCEL_INDEX = 3;
 
 class Home extends React.Component {
     constructor() {
@@ -52,11 +53,26 @@ class Home extends React.Component {
     onSelectColor(color) {
         console.log(`This color has been selected: ${color}`);
         // this.setState({color});
+
         this.ActionSheet.show();
     }
 
     handlePress(buttonIndex) {
         console.log(`The button index pressed is: ${buttonIndex}`);
+
+        // const { quotes, index } = this.props;
+        // const quote = quotes[index];
+
+        if (buttonIndex === SELECT_BUCKET_TASKS_INDEX) {
+            // 4 TODO: show next list of options that are scrollable and lazy load
+        } else if (buttonIndex === GO_TO_BUCKET_INDEX) {
+            // 2 TODO: go to bucket list
+            // 3 TODO: This page needs to create tasks
+        } else if (buttonIndex === CREATE_A_BUCKET_INDEX) {
+            // 1 TODO: go to create a bucket page
+        } else if (buttonIndex === CANCEL_INDEX) {
+            // Nothing, just cancels action sheet
+        }
     }
 
     render() {
