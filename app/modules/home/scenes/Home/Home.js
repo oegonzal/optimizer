@@ -1,16 +1,26 @@
 import React from 'react';
-import {View, FlatList, ActivityIndicator } from 'react-native';
+import {View, Text, ActivityIndicator, ScrollView, TouchableHighlight } from 'react-native';
+import ActionSheet from 'react-native-actionsheet';
 
 import {connect} from 'react-redux';
 
-import {actions as home} from "../../index"
+import {actions as home} from "../../index";
 const { getQuotes, changeOrder, dropListElement } = home;
 
-import styles from "./styles"
-import Quote from "../../components/Quote"
+import styles from "./styles";
+import Quote from "../../components/Quote";
+
+import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 // For sortable list
 import SortableList from 'react-native-sortable-list';
+
+
+// Buttons and indexes for Action Sheet
+const options = [ 'Select Tasks', 'Go to Bucket', 'Cancel'];
+const SELECT_TASK_INDEX = 0;
+const GO_TO_BUCKET_INDEX = 1;
+const CANCEL_INDEX = 2;
 
 class Home extends React.Component {
     constructor() {
@@ -20,6 +30,7 @@ class Home extends React.Component {
         this.renderItem = this.renderItem.bind(this);
         this.onChangeOrder = this.onChangeOrder.bind(this);
         this.onReleaseRow = this.onReleaseRow.bind(this);
+        this.onSelectColor = this.onSelectColor.bind(this);
     }
 
     componentDidMount() {
@@ -38,6 +49,16 @@ class Home extends React.Component {
         this.props.dropListElement(key);
     }
 
+    onSelectColor(color) {
+        console.log(`This color has been selected: ${color}`);
+        // this.setState({color});
+        this.ActionSheet.show();
+    }
+
+    handlePress(buttonIndex) {
+        console.log(`The button index pressed is: ${buttonIndex}`);
+    }
+
     render() {
         if (this.props.isLoading){
             return(
@@ -47,6 +68,12 @@ class Home extends React.Component {
             );
         } else {
             const localQuotes = JSON.parse(JSON.stringify(this.props.quotes)) || [];
+            const tempBuckets = [
+                {color: "#EB623A", title: 'test'}, {color: "#FF553F", title: 'test'}, {color: "#4F6384", title: 'test'}, {color: "#E9C9B4", title: 'test'}, {color: "#F7CDC2", title: 'test'},
+                {color: "#EFDFC8", title: 'test'}, {color: "#4E57D4", title: 'test'}, {color: "#E6A78C", title: 'test'},
+                {color: "#FE7D72", title: 'test'}, {color: "#5096CF", title: 'test'}, {color: "#F99B70", title: 'test'}, {color: "#646A6A", title: 'test'},
+            ];
+
             return (
                 <View style={styles.container}>
 
@@ -54,28 +81,32 @@ class Home extends React.Component {
                         At some point make buckets sortable too, in order to put most frequent/important ones
                         in the top */}
 
-                    {/* <View style={styles.bottomContainer}>
-                    <ScrollView contentContainerStyle={{alignItems:"center"}}
-                                horizontal showsHorizontalScrollIndicator={false}>
+                    <View style={styles.topContainer}>
+                        <ScrollView contentContainerStyle={{alignItems:"center"}}
+                                    horizontal showsHorizontalScrollIndicator={true}>
                             {
-                                colors.map((color, idx) => {
+                                tempBuckets.map((bucket, idx) => {
                                     return (
                                         <TouchableHighlight
                                             key={idx}
                                             underlayColor={"transparent"}
-                                            onPress={() => this.onSelectColor(color)}>
+                                            onPress={() => this.onSelectColor(bucket.color)}>
                                             <View style={[
                                                 styles.color,
-                                                {backgroundColor: color},
-                                                (this.state.color === color) && {borderWidth: 3, borderColor: "white"}
-                                            ]}/>
+                                                {backgroundColor: bucket.color},
+                                                (this.state.color === bucket.color) && {borderWidth: 3, borderColor: "white"}
+                                            ]}>
+                                                <Text style={[styles.bucketTitle]}>
+                                                    {bucket.title}
+                                                </Text>
+                                            </View>
                                         </TouchableHighlight>
                                     )
                                 })
                             }
                         </ScrollView>
                     </View>
-                    <KeyboardSpacer /> */}
+                    
 
                     {/* 
                         Need to create the CRUD implementations for bucket and task ?
@@ -114,6 +145,14 @@ class Home extends React.Component {
                         renderRow={this.renderItem}
                         onChangeOrder={this.onChangeOrder}
                         onReleaseRow={this.onReleaseRow} />
+
+                    <ActionSheet
+                        ref={o => this.ActionSheet = o}
+                        options={options}
+                        cancelButtonIndex={CANCEL_INDEX}
+                        onPress={this.handlePress}
+                    />
+                    <KeyboardSpacer />
                 </View>
             );
         }

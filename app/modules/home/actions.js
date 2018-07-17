@@ -22,6 +22,48 @@ export function dropListElement(index) {
     };
 }
 
+export function addBucket(bucket, successCB, errorCB) {
+    return (dispatch) => {
+
+    };
+}
+
+export function getBucketsBasic(errorCB) {
+    return (dispatch) => {
+
+    };
+}
+
+export function getBucketsDetailed(errorCB) {
+    return (dispatch) => {
+
+    };
+}
+
+export function updateBucket(bucket, successCB, errorCB) {
+    return (dispatch) => {
+
+    };
+}
+
+export function deleteBucket(bucket, errorCB) {
+    return (dispatch) => {
+
+    };
+}
+
+export function archiveBucket(bucket, errorCB) {
+    return (dispatch) => {
+
+    };
+}
+
+export function archiveQuote(quote, errorCB) {
+    return (dispatch) => {
+
+    };
+}
+
 // Add Quote - CREATE (C)
 export function addQuote(quote, successCB, errorCB) {
     return (dispatch) => {
