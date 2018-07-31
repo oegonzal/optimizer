@@ -18,7 +18,8 @@ class NewBucket extends React.Component {
         super(props);
 
         this.state = {
-            text: (props.edit) ? props.quote.text : "",
+			title: (props.edit) ? props.quote.title : "",
+			description: (props.edit) ? props.quote.description : "",
             color: (props.edit) ? props.quote.color : colors[0],
         };
 
@@ -31,18 +32,19 @@ class NewBucket extends React.Component {
     }
 
     onChangeText(text, type) {
-        const { color, title, description, deadline, effortPoints, priorityLevel } = this.state;
+        const { color, title, description } = this.state;
 
         const showButton = (
             this.state.title.trim().length > 0
             && this.state.description.trim().length > 0
          );
 
-        const edit = (this.props.edit); // check if in edit mode
+		const edit = (this.props.edit); // check if in edit mode
+		const isBucket = true;
 
-        let data = {color, edit, title, description, deadline, effortPoints, priorityLevel};
+        let data = {color, edit, title, description, isBucket };
 
-        if (edit) data['quote'] = this.props.quote;
+        if (edit) data['bucket'] = this.props.bucket;
 
         const newStateSection = {};
         newStateSection[type] = text;

@@ -3,7 +3,8 @@ import * as api from './api';
 
 let initialState = {
     isLoading: false,
-    quotes: []
+    quotes: [],
+    buckets: []
 };
 
 const homeReducer = (state = initialState, action) => {
@@ -14,6 +15,15 @@ const homeReducer = (state = initialState, action) => {
 
             // show loading signal
             if (quotes.length === 0) return {...state, isLoading: true}
+
+            return state;
+        }
+
+        case t.LOADING_BUCKETS: {
+            const buckets = state.buckets;
+
+            // show loading signal
+            if (buckets.length === 0) return {...state, isLoading: true};
 
             return state;
         }
@@ -35,6 +45,12 @@ const homeReducer = (state = initialState, action) => {
             return {...state, quotes, isLoading: false};
         }
 
+        case t.BUCKETS_AVAILABLE: {
+            let { data } = action;
+            let buckets = [];
+            return {...state, buckets, isLoading: false};
+        }
+
         case t.QUOTE_DELETED: {
             const { quote } = action;
             const { quotes, currentQuotesIndexOrder } = state;
@@ -49,6 +65,11 @@ const homeReducer = (state = initialState, action) => {
             }
 
             return {...state, currentQuotesIndexOrder};
+        }
+
+        case t.BUCKET_DELETED: {
+            const { bucket } = action;
+            return state;
         }
 
         case t.LIST_ORDER_CHANGE: {

@@ -16,6 +16,7 @@ import ForgotPassword from '../modules/auth/scenes/ForgotPassword';
 import Home from '../modules/home/scenes/Home';
 import NewQuote from '../modules/home/scenes/NewQuote';
 import NewBucket from '../modules/home/scenes/NewBucket';
+import Buckets from '../modules/home/scenes/Buckets';
 
 import NavButton from '../components/NavButton';
 import SaveButton from '../modules/home/components/SaveButton';
@@ -102,6 +103,7 @@ class RouterCmp extends React.Component {
     onPressShowActionSheet() {
         return (
             <NavButton appNav={true}
+                       onPress={() => {}}
                        name={"md-more"}
                        type={"ionicon"}
                        color={color.black}/>
@@ -135,6 +137,12 @@ class RouterCmp extends React.Component {
                                    component={Home} 
                                    title="Home" 
                                    initial={true} 
+                                   type={ActionConst.REPLACE}
+                                   renderLeftButton={this.renderLogoutButton}
+                                   renderRightButton={this.onPressShowActionSheet}/>
+                            <Scene key="Buckets"
+                                   component={Buckets} 
+                                   title="Buckets" 
                                    type={ActionConst.REPLACE}
                                    renderLeftButton={this.renderLogoutButton}
                                    renderRightButton={this.onPressShowActionSheet}/>

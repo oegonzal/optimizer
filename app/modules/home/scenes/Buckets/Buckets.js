@@ -3,11 +3,11 @@ import {View, FlatList, ActivityIndicator } from 'react-native';
 
 import {connect} from 'react-redux';
 
-import {actions as home} from "../../index"
-const { getQuotes, changeOrder, dropListElement } = home;
+import {actions as home} from "../../index";
+const { getBucketsBasic } = home;
 
-import styles from "./styles"
-import Quote from "../../components/Quote"
+import styles from "./styles";
+import Bucket from "../../components/Bucket";
 
 // For sortable list
 import SortableList from 'react-native-sortable-list';
@@ -15,30 +15,29 @@ import SortableList from 'react-native-sortable-list';
 class Buckets extends React.Component {
     constructor() {
         super();
-        this.state = {}
+        this.state = {};
+
+        // REMOVE
+        console.log(`Inside buckets list....`);
 
         this.renderItem = this.renderItem.bind(this);
-        this.onChangeOrder = this.onChangeOrder.bind(this);
-        this.onReleaseRow = this.onReleaseRow.bind(this);
     }
 
     componentDidMount() {
-        this.props.getQuotes((error) => alert(error.message))
+        const params = { userId: this.state.user };
+        this.props.getBucketsBasic(params, (error) => alert(error.message));
     }
 
     renderItem({item, index, active, data}) {
-        return <Quote index={index} active={active} data={data}/>
-    }
-
-    onChangeOrder(nextOrder) {
-        this.props.changeOrder(nextOrder);
-    }
-
-    onReleaseRow(key) {
-        this.props.dropListElement(key);
+        console.log(`Bucket index is: ${index}`);
+        return <Bucket index={index} active={active} data={data}/>
     }
 
     render() {
+
+        // REMOVE
+        console.log(`Rendering buckets list page....`);
+
         if (this.props.isLoading){
             return(
                 <View style={styles.activityIndicator}>
@@ -46,27 +45,44 @@ class Buckets extends React.Component {
                 </View>
             );
         } else {
-            const localQuotes = JSON.parse(JSON.stringify(this.props.quotes)) || [];
+            // REMOVE
+            console.log(`Here are the buckets...`);
+            console.log(this.props.buckets);
+
+            const localBuckets = JSON.parse(JSON.stringify(this.props.buckets)) || [];
+
+            // REMOVE
+            console.log(localBuckets);
+
             return (
+
+                // TODO: Need to make sure data going in here is coming from bucket API
+
                 <View style={styles.container}>
                    <SortableList
                         style={styles.list}
                         contentContainerStyle={styles.contentContainer}
-                        data={localQuotes}
-                        renderRow={this.renderItem}
-                        onChangeOrder={this.onChangeOrder}
-                        onReleaseRow={this.onReleaseRow} />
+                        data={localBuckets}
+                        renderRow={this.renderItem} />
                 </View>
             );
         }
     }
 }
 
+// TODO: get buckets and add them to this component
+/**
+ * How is data retrieved and stored in the store object
+ * 
+ */
+
 function mapStateToProps(state, props) {
     return {
         isLoading: state.homeReducer.isLoading,
-        quotes: state.homeReducer.quotes
+        buckets: state.homeReducer.buckets,
+        user: state.authReducer.user,
     }
 }
 
-export default connect(mapStateToProps, { getQuotes, changeOrder, dropListElement })(Buckets);
+// TODO: Get buckets & do we need changeOrder & dropListElement? Are the items being stored in order?
+export default connect(mapStateToProps, { getBucketsBasic })(Buckets);

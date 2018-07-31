@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Text, ActivityIndicator, ScrollView, TouchableHighlight } from 'react-native';
 import ActionSheet from 'react-native-actionsheet';
+import {Actions} from 'react-native-router-flux';
 
 import {connect} from 'react-redux';
 
@@ -17,11 +18,10 @@ import SortableList from 'react-native-sortable-list';
 
 
 // Buttons and indexes for Action Sheet
-const options = [ 'Select Tasks', 'Go to Bucket', 'Create a Bucket', 'Cancel'];
+const options = ['Select Tasks', 'Create a Bucket', 'Cancel'];
 const SELECT_BUCKET_TASKS_INDEX = 0;
 const GO_TO_BUCKET_INDEX = 1;
-const CREATE_A_BUCKET_INDEX = 2;
-const CANCEL_INDEX = 3;
+const CANCEL_INDEX = options.length - 1;
 
 class Home extends React.Component {
     constructor() {
@@ -68,8 +68,6 @@ class Home extends React.Component {
         } else if (buttonIndex === GO_TO_BUCKET_INDEX) {
             // 2 TODO: go to bucket list
             // 3 TODO: This page needs to create tasks
-        } else if (buttonIndex === CREATE_A_BUCKET_INDEX) {
-            // 1 TODO: go to create a bucket page
         } else if (buttonIndex === CANCEL_INDEX) {
             // Nothing, just cancels action sheet
         }
@@ -178,7 +176,7 @@ class Home extends React.Component {
 function mapStateToProps(state, props) {
     return {
         isLoading: state.homeReducer.isLoading,
-        quotes: state.homeReducer.quotes
+        quotes: state.homeReducer.quotes    // TODO: can i comment this out?
     }
 }
 

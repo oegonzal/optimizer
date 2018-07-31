@@ -9,7 +9,7 @@ import styles from "./styles"
 import {connect} from "react-redux";
 
 import {actions as home, theme} from "../../index"
-const { addQuote, updateQuote } = home;
+const { addQuote, updateQuote, addBucket, updateBucket } = home;
 const { normalize } = theme;
 
 class SaveButton extends React.Component {
@@ -24,8 +24,41 @@ class SaveButton extends React.Component {
         const { data } = this.props;
         const { edit } = data;
 
-        if (edit) this.editQuote()
-        else this.saveQuote()
+        if (edit) {
+            if (data.isBucket) this.editBucket();
+            else this.editQuote();
+        }
+        else {
+            if (data.isBucket) this.saveBucket();
+            else this.saveQuote();
+        }
+    }
+
+    editBucket() {
+        let { data } = this.props;
+        const { color, bucket, title, description } = data;
+
+        bucket['color'] = color;
+        bucket['title'] = title;
+        bucket['description'] = description;
+
+        this.props.updateBucket(bucket, this.onSuccess, this.onError)
+    }
+
+    saveBucket() {
+        const { data, user } = this.props;
+        const {color, title, description, deadline, effortPoints, priorityLevel } = data;
+
+        const newBucket = {
+            color,
+            time: Date.now(),
+            tasks: [],
+            title,
+            loveCount: 0,
+            description
+        };
+
+        this.props.addBucket(newBucket, this.onSuccess, this.onError);
     }
 
     editQuote() {
@@ -61,10 +94,6 @@ class SaveButton extends React.Component {
             priorityLevel
         };
 
-        // Remove
-        console.log('Save quote from button, newQuote: ');
-        console.log(newQuote);
-
         this.props.addQuote(newQuote, this.onSuccess, this.onError);
     }
 
@@ -98,4 +127,5 @@ function mapStateToProps(state, props) {
     }
 }
 
-export default connect(mapStateToProps, { addQuote, updateQuote })(SaveButton);
+export default connect(mapStateToProps, { 
+    addQuote, updateQuote, addBucket, updateBucket })(SaveButton);

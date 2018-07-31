@@ -22,6 +22,8 @@ import { Actions } from "react-native-router-flux";
 const { deleteQuote, toggleLove, updateListOrder } = actions;
 const { normalize } = theme;
 
+
+// TODO: Make sure these options work
 // Buttons and indexes for Action Sheet
 const options = [ 'Save List Order', 'Edit', 'Delete', 'Cancel' ];
 const SAVE_ORDER_INDEX  = 0;
@@ -29,10 +31,15 @@ const CREATE_INDEX = 1;
 const DESTRUCTIVE_INDEX = 2;
 const CANCEL_INDEX = 3;
 
-class Quote extends React.Component {
+
+
+class Bucket extends React.Component {
     constructor() {
         super();
         this.state = {}
+
+        // REMOVE
+        console.log(`Inside a new bucket....`);
 
         this.onDelete = this.onDelete.bind(this);
         this.onToggleLove = this.onToggleLove.bind(this);
@@ -90,38 +97,25 @@ class Quote extends React.Component {
     }
 
     handlePress(buttonIndex) {
-        const { quotes, index } = this.props;
-        const quote = quotes[index];
-
-        if (buttonIndex === CREATE_INDEX) {
-            Actions.NewQuote({ edit:true, quote });
-        } else if (buttonIndex === DESTRUCTIVE_INDEX) {
-            this.onDelete();
-        } else if (buttonIndex === SAVE_ORDER_INDEX) {
-          const quotes =
-            (this.props.quoteOrder || []).map((origQuoteInd, arrInd) => {
-              const quote = this.props.quotes[origQuoteInd];
-              quote.orderNumber = arrInd;
-              return quote;
-            });
-          this.props.updateListOrder(quotes);
-        }
+        const { buckets, index } = this.props;
     }
 
     onDelete() {
-        const { quotes, index } = this.props;
-        const quote = quotes[index];
+        const { buckets, index } = this.props;
+        const bucket = buckets[index];
+		    const params = { bucket, user: this.state.user };
 
-        this.props.deleteQuote(quote, (error) =>  alert(error.message))
+		// TODO: remove bucket
+        this.props.deleteBucket(params, (error) =>  alert(error.message))
     }
 
     onToggleLove() {
-        const { user, quotes, index } = this.props;
-        const quote = quotes[index];
+        const { user, buckets, index } = this.props;
+        const bucket = buckets[index];
 
-        const data = { quote, uid:user.uid };
+        const data = { bucket, uid:user.uid };
 
-        this.props.toggleLove(data, (error) =>  alert(error.message))
+        // this.props.toggleLove(data, (error) =>  alert(error.message))
     }
 
     renderOptionButton() {
@@ -149,9 +143,9 @@ class Quote extends React.Component {
     }
 
     renderLoveButton(){
-      const { user, quotes, index } = this.props;
-      const quote = quotes[index];
-      const { loves } = quote;
+      const { user, buckets, index } = this.props;
+      const bucket = buckets[index];
+      const { loves } = bucket;
 
       return(
         <TouchableOpacity onPress={this.onToggleLove}>
@@ -175,7 +169,7 @@ class Quote extends React.Component {
 
     renderDescription(description) {
       return (
-        <View style={[styles.quote]}>
+        <View style={[styles.bucket]}>
           <Text style={[styles.text]}>
             {description}
           </Text>
@@ -184,15 +178,17 @@ class Quote extends React.Component {
     }
 
     render() {
-      const { user, quotes, index, data } = this.props;
+      const { user, buckets, index, data } = this.props;
       const { text, title, description, deadline, effortPoints,
               priorityLevel, author, time, color, userId } = data;
 
       return (
+		// TODO: Now make these buckets show up correctly
+
         // For Sortable list:
         <Animated.View style={[styles.container, this._style,]}>
           <View style={[styles.wrapper, {backgroundColor: color, borderColor: color}]}>
-            <View style={[styles.quote]}>
+            <View style={[styles.bucket]}>
               <Text style={[styles.text]}>
                 {title}
               </Text>
@@ -200,12 +196,6 @@ class Quote extends React.Component {
             </View>
 
             {!!description && this.renderDescription(description)}
-
-            <View style={[styles.quote]}>
-              <Text style={[styles.text]}>Deadline: {deadline}</Text>
-              <Text style={[styles.text]}>Points: {effortPoints}</Text>
-              <Text style={[styles.text]}>Level: {priorityLevel}</Text>
-            </View>
 
             <View style={styles.bottom}>
               <View style={styles.left}>
@@ -226,12 +216,17 @@ class Quote extends React.Component {
     }
 }
 
+// TODO: change this to buckets
+
 function mapStateToProps(state, props) {
     return {
         user: state.authReducer.user,
-        quotes: state.homeReducer.quotes,
-        quoteOrder: state.homeReducer.currentQuotesIndexOrder
+        buckets: state.homeReducer.buckets
     }
 }
 
-export default connect(mapStateToProps, { deleteQuote, toggleLove, updateListOrder })(Quote);
+// TODO: 
+// Add the delete feature
+// Add save list order ability
+
+export default connect(mapStateToProps, { deleteQuote, toggleLove, updateListOrder })(Bucket);

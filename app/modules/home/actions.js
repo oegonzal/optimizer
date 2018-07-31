@@ -14,6 +14,10 @@ export function changeOrder(currentQuotesIndexOrder) {
     };
 }
 
+
+// TODO: consider using this again when you change quotes to props instead of state
+// on Home component, when prop changes it won't reload page but action can
+// save state version and upload api!
 export function dropListElement(index) {
     return (dispatch) => {
         // Use this action when an items gets dropped/switched in the list
@@ -24,13 +28,20 @@ export function dropListElement(index) {
 
 export function addBucket(bucket, successCB, errorCB) {
     return (dispatch) => {
-
+        api.addBucket(bucket, function (success, data, error) {
+            if (success) successCB();
+            else if (error) errorCB(error)
+        });
     };
 }
 
-export function getBucketsBasic(errorCB) {
+export function getBucketsBasic(params, errorCB) {
     return (dispatch) => {
-
+        dispatch({type: t.LOADING_BUCKETS});
+        api.getBuckets(params, function (success, data, error) {
+            if (success) dispatch({type: t.BUCKETS_AVAILABLE, data});
+            else if (error) errorCB(error);
+        });
     };
 }
 
@@ -42,13 +53,19 @@ export function getBucketsDetailed(errorCB) {
 
 export function updateBucket(bucket, successCB, errorCB) {
     return (dispatch) => {
-
+        api.updateBucket(bucket, function (success, data, error) {
+            if (success) successCB();
+            else if (error) errorCB(error);
+        });
     };
 }
 
-export function deleteBucket(bucket, errorCB) {
+export function deleteBucket(params, errorCB) {
     return (dispatch) => {
-
+        dispatch({type: t.BUCKET_DELETED, quote});
+        api.deleteBucket(params, function (success, data, error) {
+            if (error) errorCB(error);
+        })
     };
 }
 
@@ -80,7 +97,7 @@ export function getQuotes(errorCB) {
         dispatch({type: t.LOADING_QUOTES});
         api.getQuotes(function (success, data, error) {
             if (success) dispatch({type: t.QUOTES_AVAILABLE, data});
-            else if (error) errorCB(error)
+            else if (error) errorCB(error);
         });
     };
 }
