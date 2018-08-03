@@ -27,6 +27,8 @@ export function getBuckets(params, callback) {
 
     // Start listening for new data
     bucketRef.on('value', function(snapshot) {
+        console.log(`Here is the snapshot`);
+        console.log(snapshot);
         callback(true, snapshot, null);
     });
 }
@@ -69,14 +71,14 @@ export function updateBucket(bucket, callback) {
 
 // TODO: need to save by user
 export function addBucket(bucket, callback) {
-    const { userId } = bucket;
+    const { user } = bucket;
     const newBucketRef = database.ref().child('buckets').push();
     const newBucketKey = newBucketRef.key;
 
     bucket.id = newBucketKey;
 
     let updates = {};
-    updates['/users/' + userId + '/buckets/' + newBucketKey] = bucket;
+    updates['/users/' + user.uid + '/buckets/' + newBucketKey] = bucket;
 
     database.ref().update(updates)
         .then(() => callback(true, bucket, null))

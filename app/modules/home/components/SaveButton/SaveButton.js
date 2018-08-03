@@ -17,7 +17,11 @@ class SaveButton extends React.Component {
         super(props)
         this.state = {}
 
-        this.onPress = this.onPress.bind(this)
+        this.onPress = this.onPress.bind(this);
+        this.saveBucket = this.saveBucket.bind(this);
+        this.editBucket = this.editBucket.bind(this);
+        this.saveQuote = this.saveQuote.bind(this);
+        this.editQuote = this.editQuote.bind(this);
     }
 
     onPress() {
@@ -55,7 +59,8 @@ class SaveButton extends React.Component {
             tasks: [],
             title,
             loveCount: 0,
-            description
+            description,
+            user
         };
 
         this.props.addBucket(newBucket, this.onSuccess, this.onError);
