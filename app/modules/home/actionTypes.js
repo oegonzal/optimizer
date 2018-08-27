@@ -13,3 +13,4 @@ export const BUCKET_DELETED = 'home/BUCKET_DELETED';
 // For sortable list
 export const LIST_ORDER_CHANGE = 'home/LIST_ORDER_CHANGE';
 export const LIST_ELEMENT_DROP = 'home/LIST_ELEMENT_DROP';
+

@@ -25,14 +25,9 @@ import SaveButton from '../modules/home/components/SaveButton';
 import store from '../redux/store';
 import { checkLoginStatus, logoutFromSession } from "../modules/auth/actions";
 
-import {color, navTitleStyle} from "../styles/theme";
+import {color, navTitleStyle} from '../styles/theme';
 
-
-
-// TODO: find a better way to call this bc it is supposed to only be used
-// in its own component
-// import { actions as auth } from "../modules/auth/index"; 
-
+import { sceneTypes } from '../services/Types';
 
 /**
  * Consider putting the sandwhich icon on the right side of the header
@@ -86,6 +81,16 @@ class RouterCmp extends React.Component {
         )
     }
 
+    onPressShowActionSheet(navType) {
+        return (
+            <NavButton navType={navType}
+                       onPress={() => {}}
+                       name={"md-more"}
+                       type={"ionicon"}
+                       color={color.black}/>
+        )
+    }
+
     renderSaveButton(props) {
         if (props.showButton) return (<SaveButton data={props.data}/>);
         else return null;
@@ -96,18 +101,7 @@ class RouterCmp extends React.Component {
         this.setState(prevState => {
             return { isLoggedIn: false };
         });
-        // Actions.pop();
         Actions.Auth();
-    }
-
-    onPressShowActionSheet() {
-        return (
-            <NavButton appNav={true}
-                       onPress={() => {}}
-                       name={"md-more"}
-                       type={"ionicon"}
-                       color={color.black}/>
-        )
     }
 
     render() {
@@ -139,34 +133,28 @@ class RouterCmp extends React.Component {
                                    initial={true} 
                                    type={ActionConst.REPLACE}
                                    renderLeftButton={this.renderLogoutButton}
-                                   renderRightButton={this.onPressShowActionSheet}/>
+                                   renderRightButton={() => this.onPressShowActionSheet(sceneTypes.HOME)}/>
                             <Scene key="Buckets"
-                                   component={Buckets} 
-                                   title="Buckets" 
-                                   type={ActionConst.REPLACE}
-                                   renderLeftButton={this.renderLogoutButton}
-                                   renderRightButton={this.onPressShowActionSheet}/>
+                                    component={Buckets} 
+                                    title="Buckets"
+                                    type={ActionConst.REPLACE}
+                                    renderRightButton={() => this.onPressShowActionSheet(sceneTypes.BUCKETS)}/>
+                            <Scene key="NewQuote"
+                                    navigationBarStyle={{backgroundColor: "#fff"}}
+                                    titleStyle={navTitleStyle}
+                                    component={NewQuote}
+                                    title="New Quote"
+                                    renderLeftButton={this.renderCloseButton}
+                                    renderRightButton={this.renderSaveButton}/>
+                            <Scene key="NewBucket"
+                                    navigationBarStyle={{backgroundColor: "#fff"}}
+                                    titleStyle={navTitleStyle}
+                                    component={NewBucket}
+                                    title="New Bucket"
+                                    renderLeftButton={this.renderCloseButton}
+                                    renderRightButton={this.renderSaveButton}/>
                         </Stack>
                     </Scene>
-                    <Scene key="NewQuote"
-                           navigationBarStyle={{backgroundColor: "#fff"}}
-                           titleStyle={navTitleStyle}
-                           component={NewQuote}
-                           title="New Quote"
-                           renderLeftButton={this.renderCloseButton}
-                           renderRightButton={this.renderSaveButton}/>
-
-                    {/* 1. Need to create a NewBucket page (after this just put list in main page
-                                for speed of test/implementation)
-                        2. And a bucket list page */}
-
-                    <Scene key="NewBucket"
-                           navigationBarStyle={{backgroundColor: "#fff"}}
-                           titleStyle={navTitleStyle}
-                           component={NewBucket}
-                           title="New Bucket"
-                           renderLeftButton={this.renderCloseButton}
-                           renderRightButton={this.renderSaveButton}/>
                 </Modal>
             </Router>
         )

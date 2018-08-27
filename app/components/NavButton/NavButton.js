@@ -11,38 +11,85 @@ import {Actions} from 'react-native-router-flux';
 
 import styles from "./styles";
 
-// TODO: Add save order functionality here!
-// Buttons and indexes for Action Sheet
-const options = [ 'Create a Bucket', 'Bucket List', 'Save', 'Cancel'];
-const CREATE_A_BUCKET_INDEX = 0;
-const BUCKET_LIST_INDEX = 1;
-const SAVE_INDEX = 2;
-const CANCEL_INDEX = options.length - 1;
+let actionSheetIndexes = {};
+
+import { sceneTypes } from '../../services/Types';
 
 
 class NavButton extends React.Component {
     constructor() {
         super();
         this.showOptions = this.showOptions.bind(this);
-        this.handlePress = this.handlePress.bind(this);
+        // this.handlePress = this.handlePress.bind(this);
     }
 
     showOptions(color) {
         this.ActionSheet.show();
     }
 
-    handlePress(buttonIndex) {
-        if (buttonIndex === CREATE_A_BUCKET_INDEX) {
-            // 1 TODO: go to create a bucket page
-            Actions.NewBucket();
-        } else if (buttonIndex === BUCKET_LIST_INDEX) {
-            Actions.Buckets();
+    generateActionOptions(navType) {
+        switch(navType) {
+            case sceneTypes.HOME: {
+                const opts = ['Create a Bucket', 'Bucket List', 'Save', 'Cancel'];
+                actionSheetIndexes = {
+                    CREATE_A_BUCKET_INDEX: 0,
+                    BUCKET_LIST_INDEX: 1,
+                    SAVE_INDEX: 2,
+                    CANCEL_INDEX: opts.length - 1
+                };
+                return opts;
+            }
+            case sceneTypes.BUCKETS: {
+                const opts = ['Create a Bucket', 'Home', 'Save', 'Cancel'];
+                actionSheetIndexes = {
+                    CREATE_A_BUCKET_INDEX: 0,
+                    HOME_LIST_INDEX: 1,
+                    SAVE_INDEX: 2,
+                    CANCEL_INDEX: opts.length - 1,
+                };
+                return opts;
+            }
+            default: return [];
+        }
+    }
+
+    getHandlePressFn(navType){
+        switch(navType) {
+            case sceneTypes.HOME: {
+                const fn =
+                    (buttonIndex) => {
+                        if (buttonIndex === actionSheetIndexes.CREATE_A_BUCKET_INDEX) {
+                            Actions.NewBucket();
+                        } else if (buttonIndex === actionSheetIndexes.BUCKET_LIST_INDEX) {
+                            Actions.Buckets();
+                        } else if (buttonIndex === actionSheetIndexes.SAVE_INDEX) {
+                            console.log(`Order has been saved for home items`);
+                        }
+                    }
+                return fn;
+            }
+            case sceneTypes.BUCKETS: {
+                const fn =
+                    (buttonIndex) => {
+                        if (buttonIndex === actionSheetIndexes.CREATE_A_BUCKET_INDEX) {
+                            Actions.NewBucket();
+                        } else if (buttonIndex === actionSheetIndexes.HOME_LIST_INDEX) {
+                            Actions.Home();
+                        } else if (buttonIndex === actionSheetIndexes.SAVE_INDEX) {
+                            console.log(`Order has been saved for bucket items`);
+                        }
+                    }
+                return fn;
+            }
+            default: return () => {};
         }
     }
 
     render() {
-        const { name, type, size, color, onPress, text, buttonText, appNav } = this.props;
-        const onPressCb = (appNav) ? this.showOptions : onPress;
+        const { name, type, size, color, onPress, text, buttonText, navType } = this.props;
+        const onPressCb = (navType) ? this.showOptions : onPress;
+        const navOptions = (navType) ? this.generateActionOptions(navType) : [];
+        const handlePressFn = this.getHandlePressFn(navType);
 
         return (
             <TouchableOpacity onPress={onPressCb}>
@@ -60,9 +107,9 @@ class NavButton extends React.Component {
 
                     <ActionSheet
                         ref={o => this.ActionSheet = o}
-                        options={options}
-                        cancelButtonIndex={CANCEL_INDEX}
-                        onPress={this.handlePress}
+                        options={navOptions}
+                        cancelButtonIndex={actionSheetIndexes.CANCEL_INDEX}
+                        onPress={handlePressFn}
                     />
                 </View>
             </TouchableOpacity>

@@ -11,7 +11,6 @@ const styles = StyleSheet.create({
     topContainer:{
         flex: 1,
     },
-
     textInput: {
         paddingTop:normalize(8 * 3),
         paddingBottom:normalize(8 * 3),
@@ -23,24 +22,18 @@ const styles = StyleSheet.create({
         letterSpacing: .5,
         fontFamily: fontFamily.medium
     },
-
     button:{
         backgroundColor: "#FF553F",
         height: normalize(55),
-
     },
-
     buttonText:{
         color:color.white,
         fontWeight:"700",
         fontSize: fontSize.regular + 2,
     },
-
-
     bottomContainer:{
         height: normalize(49)
     },
-
     color:{
         height: normalize(25),
         width: normalize(25),

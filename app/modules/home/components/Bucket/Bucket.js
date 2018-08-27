@@ -29,7 +29,7 @@ const options = [ 'Save List Order', 'Edit', 'Delete', 'Cancel' ];
 const SAVE_ORDER_INDEX  = 0;
 const CREATE_INDEX = 1;
 const DESTRUCTIVE_INDEX = 2;
-const CANCEL_INDEX = 3;
+const CANCEL_INDEX = options.length - 1;
 
 
 
@@ -182,9 +182,6 @@ class Bucket extends React.Component {
       const { title, description, time, color, author, userId } = data;
 
       return (
-		// TODO: Now make these buckets show up correctly
-
-        // For Sortable list:
         <Animated.View style={[styles.container, this._style,]}>
           <View style={[styles.wrapper, {backgroundColor: color, borderColor: color}]}>
             <View style={[styles.bucket]}>

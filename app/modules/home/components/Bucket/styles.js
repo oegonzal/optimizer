@@ -107,7 +107,6 @@ const styles = StyleSheet.create({
         marginBottom: 12,
         borderRadius: 4,
     
-    
         ...Platform.select({
           ios: {
             width: window.width - 30 * 2,
