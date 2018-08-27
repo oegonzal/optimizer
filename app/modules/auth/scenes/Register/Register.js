@@ -15,7 +15,7 @@ const fields = [
         placeholder: "Email Address",
         autoFocus: false,
         secureTextEntry: false,
-        value: "test1@eandmdigital.com",
+        value: "",
         type: "email"
     },
     {
@@ -24,7 +24,7 @@ const fields = [
         placeholder: "Username",
         autoFocus: false,
         secureTextEntry: false,
-        value: "mosesesan",
+        value: "",
         type: "text"
     },
     {
@@ -33,7 +33,7 @@ const fields = [
         placeholder: "Password",
         autoFocus: false,
         secureTextEntry: true,
-        value: "testpass",
+        value: "",
         type: "password"
     },
     {
@@ -42,7 +42,7 @@ const fields = [
         placeholder: "Confirm Password",
         autoFocus: false,
         secureTextEntry: true,
-        value: "testpass",
+        value: "",
         type: "confirm_password"
     }
 ];

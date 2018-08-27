@@ -52,17 +52,10 @@ const homeReducer = (state = initialState, action) => {
             // convert the snapshot (json object) to array
             action.data.forEach(function (childSnapshot) {
                 const item = childSnapshot.val();
-                item.key = childSnapshot.key;
-
                 buckets.push(item);
-                console.log(item);
             });
 
             buckets.reverse();
-
-            console.log(`BUCKETS_AVAILABLE`);
-            console.log(buckets);
-
             return {...state, buckets, isLoading: false};
         }
 

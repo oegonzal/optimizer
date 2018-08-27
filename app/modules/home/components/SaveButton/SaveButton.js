@@ -60,7 +60,7 @@ class SaveButton extends React.Component {
             title,
             loveCount: 0,
             description,
-            user
+            userId: user.uid
         };
 
         this.props.addBucket(newBucket, this.onSuccess, this.onError);

@@ -24,7 +24,7 @@ class Buckets extends React.Component {
     }
 
     componentDidMount() {
-        const params = { userId: this.state.user };
+        const params = { userId: this.props.user.uid };
         this.props.getBucketsBasic(params, (error) => alert(error.message));
     }
 

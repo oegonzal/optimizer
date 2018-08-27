@@ -12,7 +12,7 @@ export function register(data, callback) {
 export function createUser (user, callback) {
     const userRef = database.ref().child('users');
 
-    userRef.child(user.uid).update({ ...user })
+    userRef.child(user.uid).update({ details: {...user } })
         .then(() => callback(true, user, null))
         .catch((error) => callback(false, null, {message: error}));
 }
@@ -27,7 +27,9 @@ export function login(data, callback) {
 
 //Get the user object from the realtime database
 export function getUser(user, callback) {
-    database.ref('users').child(user.uid).once('value')
+
+    // TODO: get only user details
+    database.ref(`users/${user.uid}/details`).once('value')
         .then(function(snapshot) {
 
             const exists = (snapshot.val() !== null);

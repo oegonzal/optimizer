@@ -184,8 +184,8 @@ class Quote extends React.Component {
     }
 
     render() {
-      const { user, quotes, index, data } = this.props;
-      const { text, title, description, deadline, effortPoints,
+      const { user, data } = this.props;
+      const { title, description, deadline, effortPoints,
               priorityLevel, author, time, color, userId } = data;
 
       return (
