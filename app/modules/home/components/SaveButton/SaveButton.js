@@ -54,6 +54,9 @@ class SaveButton extends React.Component {
         const {color, title, description, deadline, effortPoints, priorityLevel } = data;
 
         const newBucket = {
+            author: {
+                name: user.username
+            },
             color,
             time: Date.now(),
             tasks: [],

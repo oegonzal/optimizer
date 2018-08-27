@@ -177,24 +177,9 @@ class Bucket extends React.Component {
       );
     }
 
-    renderBucketDetails() {
-      return (
-        <View style={styles.bottom}>
-          <View style={styles.left}>
-            <Text style={[styles.author]}>
-              {data.user.username}
-            </Text>
-            <Text style={[styles.publishedAt]}>
-              {moment(time).fromNow()}
-            </Text>
-          </View>
-        </View>
-      );
-    }
-
     render() {
       const { user, data } = this.props;
-      const { title, description, time, color } = data;
+      const { title, description, time, color, author, userId } = data;
 
       return (
 		// TODO: Now make these buckets show up correctly
@@ -206,12 +191,21 @@ class Bucket extends React.Component {
               <Text style={[styles.text]}>
                 {title}
               </Text>
-              {(data.user && user.uid === data.user.uid) && this.renderOptionButton()}
+              {(user.uid === userId) && this.renderOptionButton()}
             </View>
 
             {!!description && this.renderDescription(description)}
 
-            {data.user && this.renderBucketDetails()}
+            <View style={styles.bottom}>
+              <View style={styles.left}>
+                <Text style={[styles.author]}>
+                  {author.name}
+                </Text>
+                <Text style={[styles.publishedAt]}>
+                  {moment(time).fromNow()}
+                </Text>
+              </View>
+            </View>
           </View>
         </Animated.View>
       );
